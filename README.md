@@ -20,3 +20,17 @@ SpringCloud-alibaba 集成seata分布式事务管理
 ##需要搭建nacos以及seata
 
 在mysql数据库中依次执行db文件夹下面的sql文件
+
+##里面的MysqlGenerator.java文件是个反向工程代码生成文件，需要依赖以下jar包
+![img.png](img.png)
+
+
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-generator</artifactId>
+        <version>3.3.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+    </dependency>
