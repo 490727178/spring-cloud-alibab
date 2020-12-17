@@ -1,0 +1,59 @@
+server:
+  port: 2002
+
+spring:
+  application:
+    name: account-service
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+    nacos:
+      discovery:
+        server-addr: node1:8848,node2:8848,node3:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://node1:3306/seata_account?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+
+logging:
+  level:
+    io:
+      seata: info
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      server-addr: node1:8848
+      group: SEATA_GROUP
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: node1:8848
+      group: SEATA_GROUP
+      namespace:
+
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 3000
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+      table-underline: true
+      db-type: mysql
+      logic-delete-value: 1 # �߼���ɾ��ֵ(Ĭ��Ϊ 1)
+      logic-not-delete-value: 0 # �߼�δɾ��ֵ(Ĭ��Ϊ 0)
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.shang.account.entity

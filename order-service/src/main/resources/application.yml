@@ -1,0 +1,58 @@
+server:
+  port: 2001
+
+spring:
+  application:
+    name: order-service
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+    nacos:
+      discovery:
+        server-addr: node1:8848,node2:8848,node3:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://node1:3306/seata_order?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+
+logging:
+  level:
+    io:
+      seata: info
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      server-addr: node1:8848
+      group: SEATA_GROUP
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: node1:8848
+      group: SEATA_GROUP
+      namespace:
+
+
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 3000
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:**/mapper/*.xml
+  type-aliases-package: com.shang.order.entity
+  global-config:
+    db-config:
+      field-strategy: not-empty
+      id-type: auto
+      db-type: mysql
